@@ -4,6 +4,9 @@ import com.alibaba.fastjson.JSONObject;
 import feign.Feign;
 import feign.gson.GsonDecoder;
 import feign.gson.GsonEncoder;
+import feign.httpclient.ApacheHttpClient;
+import feign.jackson.JacksonDecoder;
+import feign.jackson.JacksonEncoder;
 import lombok.extern.slf4j.Slf4j;
 import org.springframework.boot.SpringApplication;
 import org.springframework.boot.autoconfigure.SpringBootApplication;
@@ -30,21 +33,34 @@ public class Consumer {
     @RequestMapping(value = "/hello/{name}",method = RequestMethod.GET)
     public Result<String> sayHello(@PathVariable String name){
 
-        IService service = Feign.builder().decoder(new GsonDecoder()).target(IService.class,"http://localhost:8087");
+        IService service = Feign.builder()
+                .decoder(new GsonDecoder())
+                .target(IService.class,"http://localhost:8087");
 
         return service.hello(name);
     }
 
-    @RequestMapping(value = "/user/{uid}")
+    @RequestMapping(value = "/user/{uid}",method = RequestMethod.GET)
     public Result<User> updateUser(@PathVariable long uid){
         log.info("================================="+ uid);
-        IService service = Feign.builder()
+        IUserService service = Feign.builder()
                 .encoder(new GsonEncoder())
                 .decoder(new GsonDecoder())
-                .target(IService.class,"http://localhost:8087");
+                .target(IUserService.class,"http://localhost:8087");
         User user = new User();
         user.setUid(uid);
         log.info("================================="+ JSONObject.toJSONString(user));
         return service.updateUser(user);
+    }
+
+    @RequestMapping(value = "/userInfo/{uid}",method = RequestMethod.GET)
+    public User findUser(@PathVariable long uid){
+        IUserService service = Feign.builder()
+                .encoder(new GsonEncoder())
+                .decoder(new GsonDecoder())
+                .target(IUserService.class,"http://localhost:8087");
+        User user = new User();
+        user.setUid(uid);
+        return service.findUser(user);
     }
 }

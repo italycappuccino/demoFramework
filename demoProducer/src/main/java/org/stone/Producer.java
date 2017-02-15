@@ -21,13 +21,13 @@ public class Producer {
         SpringApplication.run(Producer.class,args);
     }
 
-    @RequestMapping(value = "/{name}",method = RequestMethod.GET)
+    @RequestMapping(value = "/hello/{name}",method = RequestMethod.GET)
     public Result<String> hello(@PathVariable String name){
         return new Result<>("hello, "+name);
     }
-
+//
     @RequestMapping(value = "/user/update",method = RequestMethod.POST)
-    public Result<User> updateUser(User user){
+    public Result<User> updateUser(@RequestBody User user){
 
         log.info("================================="+ JSONObject.toJSONString(user));
         User tmpUser = new User();
@@ -38,6 +38,18 @@ public class Producer {
 
         log.info("================================="+ JSONObject.toJSONString(tmpUser));
 
-        return new Result<>(user);
+        return new Result<>(tmpUser);
+    }
+
+    @RequestMapping(value = "/user/info",method = RequestMethod.POST)
+    public User findUser(@RequestBody User user){
+        log.info("================================="+ JSONObject.toJSONString(user));
+        User tmpUser = new User();
+        tmpUser.setUid(user.getUid());
+        tmpUser.setAge(30);
+        tmpUser.setIdentity(UUID.randomUUID().toString());
+        tmpUser.setName("test");
+        log.info("================================="+ JSONObject.toJSONString(tmpUser));
+        return tmpUser;
     }
 }
