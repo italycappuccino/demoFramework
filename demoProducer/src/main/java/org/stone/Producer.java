@@ -25,7 +25,7 @@ public class Producer {
     public Result<String> hello(@PathVariable String name){
         return new Result<>("hello, "+name);
     }
-//
+
     @RequestMapping(value = "/user/update",method = RequestMethod.POST)
     public Result<User> updateUser(@RequestBody User user){
 

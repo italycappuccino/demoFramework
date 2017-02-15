@@ -4,9 +4,6 @@ import com.alibaba.fastjson.JSONObject;
 import feign.Feign;
 import feign.gson.GsonDecoder;
 import feign.gson.GsonEncoder;
-import feign.httpclient.ApacheHttpClient;
-import feign.jackson.JacksonDecoder;
-import feign.jackson.JacksonEncoder;
 import lombok.extern.slf4j.Slf4j;
 import org.springframework.boot.SpringApplication;
 import org.springframework.boot.autoconfigure.SpringBootApplication;
@@ -16,8 +13,6 @@ import org.springframework.web.bind.annotation.RequestMethod;
 import org.springframework.web.bind.annotation.RestController;
 import org.stone.entity.Result;
 import org.stone.entity.User;
-
-import java.util.UUID;
 
 /**
  * Created by liulei on 2017-02-14.
